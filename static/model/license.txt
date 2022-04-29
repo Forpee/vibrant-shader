@@ -1,11 +1,11 @@
 Model Information:
-* title:	Housewife Model
-* source:	https://sketchfab.com/3d-models/housewife-model-a2e51506b41b481cb00f0db4cf903f46
-* author:	hong227 (https://sketchfab.com/hong227)
+* title:	Skull Proportions & Key Landmarks
+* source:	https://sketchfab.com/3d-models/skull-proportions-key-landmarks-20c0f43e3778481c830978709d784681
+* author:	VAA (https://sketchfab.com/VAA)
 
 Model License:
 * license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
 * requirements:	Author must be credited. Commercial use is allowed.
 
 If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
-This work is based on "Housewife Model" (https://sketchfab.com/3d-models/housewife-model-a2e51506b41b481cb00f0db4cf903f46) by hong227 (https://sketchfab.com/hong227) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+This work is based on "Skull Proportions & Key Landmarks" (https://sketchfab.com/3d-models/skull-proportions-key-landmarks-20c0f43e3778481c830978709d784681) by VAA (https://sketchfab.com/VAA) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
