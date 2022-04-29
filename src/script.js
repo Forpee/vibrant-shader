@@ -5,6 +5,7 @@ import * as dat from 'dat.gui'
 import vertexShader from './shaders/vertex.glsl'
 import fragmentShader from './shaders/fragment.glsl'
 import gsap from 'gsap'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 /**
  * Base
  */
@@ -13,7 +14,21 @@ const gui = new dat.GUI()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
+// Loader
+const loader = new GLTFLoader()
+loader.load('/model/scene.gltf', (gltf) => {
+    // gltf.scene.position.y += -0.2
+    // gltf.scene.geometry.center()
+    gltf.scene.scale.set(0.01, 0.01, 0.01)
+    scene.add(gltf.scene)
+    gltf.scene.traverse((child) => {
+        if (child.isMesh) {
+            child.geometry.center()
+            child.material = material
+        }
+    })
 
+})
 // Scene
 const scene = new THREE.Scene()
 
@@ -21,12 +36,12 @@ const scene = new THREE.Scene()
  * Test mesh
  */
 // Geometry
-const geometry = new THREE.PlaneBufferGeometry(1, 1, 32, 32)
+const geometry = new THREE.SphereBufferGeometry(0.5, 32, 32)
 
 // Material
 const material = new THREE.ShaderMaterial({
     uniforms: {
-        uTime: {value: 0},
+        uTime: { value: 0 },
     },
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
@@ -35,7 +50,7 @@ const material = new THREE.ShaderMaterial({
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material)
-scene.add(mesh)
+// scene.add(mesh)
 
 /**
  * Sizes
@@ -45,8 +60,7 @@ const sizes = {
     height: window.innerHeight
 }
 
-window.addEventListener('resize', () =>
-{
+window.addEventListener('resize', () => {
     // Update sizes
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
@@ -59,7 +73,22 @@ window.addEventListener('resize', () =>
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
-
+/**
+ * Lights
+ */
+// Ambient
+const ambientLight = new THREE.AmbientLight(0xffffff, 1)
+// scene.add(ambientLight)
+// Directional
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+directionalLight.position.set(0, 1, 1)
+// scene.add(directionalLight)
+// directional light helpers
+const dlHelper = new THREE.DirectionalLightHelper(directionalLight, 5)
+// scene.add(dlHelper)
+// Directional light camera helpers
+const dlCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
+// scene.add(dlCameraHelper)
 /**
  * Camera
  */
@@ -68,7 +97,7 @@ window.addEventListener('resize', () =>
 
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(0, 0, 2)
+camera.position.set(0, 0, 1)
 scene.add(camera)
 
 // Controls
@@ -83,14 +112,13 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-renderer.setClearColor(0xeeeeee, 1)
+renderer.setClearColor(0x111111, 1)
 /**
  * Animate
  */
 const clock = new THREE.Clock()
 
-const tick = () =>
-{
+const tick = () => {
     // Update controls
     controls.update()
 

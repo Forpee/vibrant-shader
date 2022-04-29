@@ -1,4 +1,5 @@
 varying vec2 vUv;
+varying vec3 vNormal;
 
 void main()
 {
@@ -8,4 +9,5 @@ void main()
     gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);
     
     vUv=uv;
+    vNormal=normal;
 }
