@@ -42,6 +42,7 @@ const geometry = new THREE.SphereBufferGeometry(0.5, 32, 32)
 const material = new THREE.ShaderMaterial({
     uniforms: {
         uTime: { value: 0 },
+        uTexture: {value: new THREE.TextureLoader().load('/env.png')}
     },
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
