@@ -150,8 +150,8 @@ void main()
     float phi = acos(vNormal.y);
     float angle = atan(vNormal.x, vNormal.z);
 
-    float fresnel = abs(dot(cameraPosition, vNormal));
-    fresnel = pow(fresnel, 3.);
+    float fresnel = abs(dot(cameraPosition-5., vNormal));
+    fresnel = fresnel;
 
     vec2 newFakeUv = vec2((angle+PI)/(2.*PI), phi/PI);
     vec2 fakeUv = vec2(dot(vec3(1.), vNormal), dot(vec3(-1., 0., 1.), vNormal));
