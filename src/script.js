@@ -6,7 +6,8 @@ import vertexShader from './shaders/vertex.glsl'
 import fragmentShader from './shaders/fragment.glsl'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SplitText } from 'gsap/SplitText'
 
 gsap.registerPlugin(ScrollTrigger)
 console.log(gsap);
@@ -21,19 +22,37 @@ const gui = new dat.GUI()
 const canvas = document.querySelector('canvas.webgl')
 // Loader
 const loader = new GLTFLoader()
+let model
+
 loader.load('/model/scene.gltf', (gltf) => {
     // gltf.scene.position.y += -0.2
     // gltf.scene.geometry.center()
-    gltf.scene.scale.set(0.01, 0.01, 0.01)
-    scene.add(gltf.scene)
-    gltf.scene.traverse((child) => {
+    model = gltf.scene
+    model.scale.set(0.01, 0.01, 0.01)
+    scene.add(model)
+    model.traverse((child) => {
         if (child.isMesh) {
             child.geometry.center()
             child.material = material
         }
     })
+    gsapAnimation()
 
 })
+
+const gsapAnimation = () => {
+    ScrollTrigger.create({
+        trigger: '.wrap',
+        scrub: true,
+        start: 'top top',
+        end: 'bottom bottom',
+        snap: 1 / (titles.length - 1),
+        onUpdate: (self) => {
+            model.rotation.y = self.progress * Math.PI * 2
+            model.position.z = -0.5 * Math.sin(self.progress * Math.PI)
+        }
+    })
+}
 // Scene
 const scene = new THREE.Scene()
 
@@ -47,7 +66,7 @@ const geometry = new THREE.SphereBufferGeometry(0.5, 32, 32)
 const material = new THREE.ShaderMaterial({
     uniforms: {
         uTime: { value: 0 },
-        uTexture: {value: new THREE.TextureLoader().load('/env.png')}
+        uTexture: { value: new THREE.TextureLoader().load('/env.png') }
     },
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
@@ -119,6 +138,25 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.setClearColor(0x111111, 1)
+
+
+let titles = [...document.querySelectorAll('h1')]
+// console.log(titles)
+titles.forEach(title => {
+    let mySplitText = new SplitText(title, { type: 'chars' })
+    gsap.from(mySplitText.chars, {
+        scrollTrigger: {
+            trigger: title,
+            scrub: true,
+            toggleActions: 'restart pause reverse pause'
+        },
+        duration: 0.5,
+        stagger: 0.1,
+        scale: 2,
+        autoAlpha: 0,
+    })
+})
+
 /**
  * Animate
  */
