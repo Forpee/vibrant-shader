@@ -12,6 +12,7 @@ vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-.85373472095314*r;}
 vec4 fade(vec4 t){return t*t*t*(t*(t*6.-15.)+10.);}
 
 // Classic Perlin noise, periodic version
+// yesy
 float cnoise(vec4 P,vec4 rep){
     vec4 Pi0=mod(floor(P),rep);// Integer part modulo rep
     vec4 Pi1=mod(Pi0+1.,rep);// Integer part + 1 mod rep
@@ -146,18 +147,18 @@ float PI=3.1415926535897932384626433832795;
 void main()
 {
     float diff=dot(vec3(1.),vNormal);
-
-    float phi = acos(vNormal.y);
-    float angle = atan(vNormal.x, vNormal.z);
-
-    float fresnel = abs(dot(cameraPosition-5., vNormal));
-    fresnel = fresnel;
-
-    vec2 newFakeUv = vec2((angle+PI)/(2.*PI), phi/PI);
-    vec2 fakeUv = vec2(dot(vec3(1.), vNormal), dot(vec3(-1., 0., 1.), vNormal));
-    fakeUv = fract(fakeUv+vec2(uTime/10., uTime/5.));
     
-    vec4 txt=texture2D(uTexture,newFakeUv + 0.2*cnoise(vec4(fakeUv*5., uTime/50., 0.), vec4(5.)));
+    float phi=acos(vNormal.y);
+    float angle=atan(vNormal.x,vNormal.z);
+    
+    float fresnel=abs(dot(cameraPosition-5.,vNormal));
+    fresnel=fresnel;
+    
+    vec2 newFakeUv=vec2((angle+PI)/(2.*PI),phi/PI);
+    vec2 fakeUv=vec2(dot(vec3(1.),vNormal),dot(vec3(-1.,0.,1.),vNormal));
+    fakeUv=fract(fakeUv+vec2(uTime/10.,uTime/5.));
+    
+    vec4 txt=texture2D(uTexture,newFakeUv+.2*cnoise(vec4(fakeUv*5.,uTime/50.,0.),vec4(5.)));
     gl_FragColor=vec4(vec3(abs(sin(diff*10.))),1.);
-    gl_FragColor=vec4(mix(vec3(1.), txt.rgb, fresnel), 1.);
+    gl_FragColor=vec4(mix(vec3(1.),txt.rgb,fresnel),1.);
 }
