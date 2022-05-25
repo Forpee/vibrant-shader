@@ -12,7 +12,7 @@ vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-.85373472095314*r;}
 vec4 fade(vec4 t){return t*t*t*(t*(t*6.-15.)+10.);}
 
 // Classic Perlin noise, periodic version
-// yesy
+// yes
 float cnoise(vec4 P,vec4 rep){
     vec4 Pi0=mod(floor(P),rep);// Integer part modulo rep
     vec4 Pi1=mod(Pi0+1.,rep);// Integer part + 1 mod rep
